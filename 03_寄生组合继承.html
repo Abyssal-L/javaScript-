@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        //    const food = {
+        //     name:'西红柿炒蛋',
+        //     eat(){
+        //         console.log('很好吃');
+        //     }
+        //    }
+        // //    Object.create静态方法,创建新对象,可以用来覆盖特定的属性和方法
+        //    const newFood = Object.create(food,{
+        //     eat:{
+        //         value(){
+        //             console.log('非常好吃');
+
+        //         }
+        //     }
+        //    })
+
+// 实现寄生组合继承
+        //父类
+        function Person(name) {
+            this.name = name
+        }
+        Person.prototype.sayHi = function () {
+            console.log(`你好,我叫${this.name}`);
+        }
+        //子类
+        function Student(name) {
+            //把Student的实例对象,指向Person这个构造函数 
+            Person.call(this, name)
+        }
+        //使用Person构造函数的原型对象创建一个新的对象,并且覆盖此对象中的构造器(constructor)的指向 
+        const prototype = Object.create(Person.prototype,{ constructor:{
+                value:Student
+            }
+        })
+        //改变Student的原型对象
+        Student.prototype = prototype
+        const s = new Student('张三')
+    </script>
+
+</body>
+
+</html>

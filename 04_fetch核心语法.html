@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>fetch核心语法</h2>
+    <button class="btn">
+        测试
+    </button>
+    <script>
+        /*
+            1.如何发送请求?
+            2.如何处理响应(JSON)?  */
+        document.querySelector('.btn').addEventListener('click', async () => {
+            //  使用URLSearchParams 接口定义实用的方法来处理 URL 的查询字符串。
+            const p = new URLSearchParams({ pname: '山东省', cname: '德州市' })
+            // console.log(p.toString());
+            const res = await fetch('http://hmajax.itheima.net/api/area?' + p.toString())
+            if (res.status >= 200 && res.status < 300) {
+                const data = await res.json()
+                console.log(data);
+            } else {
+                console.log('请求异常', res.status);
+            }
+        })
+        const data = new FormData()
+        console.log(data);
+
+    </script>
+</body>
+
+</html>

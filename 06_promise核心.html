@@ -1,0 +1,32 @@
+<script>
+
+    /*  
+    构造函数
+        1.定义类
+        2.添加构造函数
+        3.定义resolve/reject
+        4.执行回调函数
+    */
+
+    class myPromise {
+        constructor(func) {
+            const resolve = (result) => {
+                console.log('resolve执行了', result);
+            }
+            const reject = (result) => {
+                console.log('reject执行了', result);
+            }
+            func(resolve, reject)
+        }
+    }
+
+
+
+
+
+    // 测试
+    const p = new myPromise((resolve,reject) => {
+        resolve('success')
+        // reject('error')
+    })
+</script>

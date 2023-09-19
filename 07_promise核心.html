@@ -1,0 +1,49 @@
+<script>
+
+    /*  
+        状态及原因
+        1.添加状态(pending / fulfilled / rejected)
+        2.添加原因
+        3.调整resolve/reject
+        4.状态不可逆
+    */
+
+
+    //添加状态
+    const PENDING = 'pending'
+    const FULFILLED = 'fulfilled'
+    const REJECTED = 'rejected'
+
+    class myPromise {
+        //添加实例对象的属性
+        state = PENDING
+        result = undefined
+
+
+        constructor(func) {
+            const resolve = (result) => {
+                if (this.state === PENDING) {
+                    this.state = FULFILLED
+                    this.result = result
+                }
+            }
+            const reject = (result) => {
+                if (this.state === PENDING) {
+                    this.state = REJECTED
+                    this.result = result
+                }
+            }
+            func(resolve, reject)
+        }
+    }
+
+
+
+
+
+    // 测试
+    const p = new myPromise((resolve, reject) => {
+        resolve('success')
+        // reject('error')
+    })
+</script>

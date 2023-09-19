@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+    1.定义call方法
+    2.设置this并调用原函数
+    3.接收剩余参数并返回结果
+    4.symbol调优
+ -->
+ 
+    <script>
+        //  instanceof 就是判断一个实例是否属于某种类型
+        // 第一个参数是指定的this 也就是person
+        //调用symbol返回一个唯一的值
+        Function.prototype.myCall = function (thisArg, ...arg) {
+            //给thisArg 加一个一定和原属性不重名的新属性(方法)
+            let key = Symbol('key')
+            thisArg[key] = this
+            let res = thisArg[key](...arg)
+            delete thisArg[key]
+            return res
+        }
+        // 测试
+        const person = {
+            name: '张三'
+        }
+        function func(numA, numB) {
+            console.log(this);
+            console.log(numA, numB);
+            return numA + numB
+        }
+        const res = func.myCall(person, 1, 2)
+        console.log(res);
+
+    </script> 
+
+
+    <script>
+        Function.prototype.myApply = function (thisArg, arg) {
+            const key = Symbol('key')
+            thisArg[key] = this
+            const res = thisArg[key](...arg)
+            delete thisArg[key]
+
+            return res
+        }
+        const person2 = {
+            name: '张三'
+        }
+        function func2(numA, numB) {
+            console.log(this);
+            console.log(numA, numB);
+            return numA + numB
+        }
+        const res2 = func2.myApply(person2, [1, 2])
+        console.log(res2);
+
+
+    </script>
+
+
+</body>
+
+</html>
