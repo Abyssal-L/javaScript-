@@ -1,0 +1,76 @@
+<script>
+
+    /*  
+       成功和失败的回调
+            1.添加实例方法
+            2.参数判断
+                2.1 执行成功回调
+                2.2 执行失败回调
+    */
+
+
+    //添加状态
+    const PENDING = 'pending'
+    const FULFILLED = 'fulfilled'
+    const REJECTED = 'rejected'
+
+    class myPromise {
+        // 状态
+        state = PENDING
+        // 原因
+        result = undefined
+
+        // 构造函数
+        constructor(func) {
+            // pending->fulfilled
+            const resolve = (result) => {
+                if (this.state === PENDING) {
+                    this.state = FULFILLED
+                    this.result = result
+                }
+            }
+            // pending->rejected
+            const reject = (result) => {
+                if (this.state === PENDING) {
+                    this.state = REJECTED
+                    this.result = result
+                }
+            }
+            func(resolve, reject)
+        }
+
+        // 给实例对象添加then方法
+        then(onFulfilled, onRejected) {
+            // 参数判断
+            onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : x => x
+            onRejected = typeof onRejected === 'function' ? onRejected : x => { throw x }
+            // 根据状态执行对应的回调
+            if (this.state === FULFILLED) {
+                onFulfilled(this.result)
+            } else {
+                onRejected(this.result)
+            }
+        }
+
+    }
+
+
+
+    // 测试
+    const p = new myPromise((resolve, reject) => {
+        // resolve('success')
+        reject('error')
+    })
+    // p.then((res) => {
+    //     console.log('成功的回调', res);
+
+    // }, (err) => {
+    //     console.log('失败的回调', err);
+
+    // })
+
+    p.then(res => {
+        console.log(res);
+
+    })
+</script>
