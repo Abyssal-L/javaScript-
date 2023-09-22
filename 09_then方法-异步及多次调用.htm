@@ -1,11 +1,11 @@
 <script>
 
     /*  
-       成功和失败的回调
-            1.添加实例方法
-            2.参数判断
-                2.1 执行成功回调
-                2.2 执行失败回调
+       then方法-异步及多次调用
+            1.定义实例属性
+            2.保存then中回调函数
+            3.调用成功的回调
+            4.调用失败的回调
     */
 
 
@@ -19,6 +19,9 @@
         state = PENDING
         // 原因
         result = undefined
+        // 定义私有的实例属性存放then中的回调
+        #handlers = []
+
 
         // 构造函数
         constructor(func) {
@@ -27,6 +30,7 @@
                 if (this.state === PENDING) {
                     this.state = FULFILLED
                     this.result = result
+
                 }
             }
             // pending->rejected
@@ -49,6 +53,10 @@
                 onFulfilled(this.result)
             } else if (this.state === REJECTED) {
                 onRejected(this.result)
+            } else if (this.state === PENDING) {
+                this.#handlers.push({
+                    onFulfilled, onRejected
+                })
             }
         }
 
@@ -58,19 +66,20 @@
 
     // 测试
     const p = new myPromise((resolve, reject) => {
-        // resolve('success')
-        reject('error')
-    })
-    // p.then((res) => {
-    //     console.log('成功的回调', res);
-
-    // }, (err) => {
-    //     console.log('失败的回调', err);
-
-    // })
-
-    p.then(res => {
-        console.log(res);
+        setTimeout(() => {
+            // resolve('success')
+            reject('error')
+        }, 2000);
 
     })
+
+    p.then((res) => {
+        console.log('成功的回调', res);
+
+    }, (err) => {
+        console.log('失败的回调', err);
+
+    })
+
+
 </script>
