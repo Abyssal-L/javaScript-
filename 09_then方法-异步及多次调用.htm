@@ -30,7 +30,9 @@
                 if (this.state === PENDING) {
                     this.state = FULFILLED
                     this.result = result
-
+                    this.#handlers.forEach(({ onFulfilled }) => {
+                        onFulfilled(this.result)
+                    })
                 }
             }
             // pending->rejected
@@ -38,6 +40,9 @@
                 if (this.state === PENDING) {
                     this.state = REJECTED
                     this.result = result
+                    this.#handlers.forEach(({ onRejected }) => {
+                        onRejected(this.result)
+                    })
                 }
             }
             func(resolve, reject)
@@ -80,6 +85,13 @@
         console.log('失败的回调', err);
 
     })
+    
+    p.then((res) => {
+        console.log('成功的回调', res);
 
+    }, (err) => {
+        console.log('失败的回调', err);
+
+    })
 
 </script>
